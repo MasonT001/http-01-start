@@ -30,8 +30,8 @@ constructor(private http: HttpClient) {}
       }
       return postsArray
     }), 
-    catchError(errorMes => {
-        return throwError(errorMes)
+    catchError(errorRes => {
+        return throwError(errorRes)
     }));
   }
 
