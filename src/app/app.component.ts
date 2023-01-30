@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
+import { Post } from './post.model';
 
 @Component({
   selector: 'app-root',
@@ -18,16 +19,7 @@ export class AppComponent implements OnInit {
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
-    this.http.post('https://ms-http-default-rtdb.firebaseio.com/posts.json', postData).pipe(map(responseData => {
-      const postsArray = [];
-      for (const key in responseData) {
-        if (responseData.hasOwnProperty(key)) {
-          
-          postsArray.push({ ...responseData[key], id: key})
-        }
-      }
-      return postsArray
-    })).subscribe(responseData => {
+    this.http.post<{name: string}>('https://ms-http-default-rtdb.firebaseio.com/posts.json', postData).subscribe(responseData => {
       console.log(responseData)
     })
   }
@@ -42,8 +34,16 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPosts() {
-    this.http.get('https://ms-http-default-rtdb.firebaseio.com/posts.json').subscribe(posts => {
-      console.log(posts)
+    this.http.get<{[key: string]: Post}>('https://ms-http-default-rtdb.firebaseio.com/posts.json').pipe(map(responseData => {
+      const postsArray: Post[] = []
+      for (const key in responseData) {
+        if (responseData.hasOwnProperty(key)) {
+          postsArray.push({...responseData[key], id: key})
+        }
+      }
+      return postsArray
+    })).subscribe(posts => {
+      
     })
   }
 }
