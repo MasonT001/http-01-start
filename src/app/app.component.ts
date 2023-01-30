@@ -14,6 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isFetching = false
   error = null
   private errorSub: Subscription
+  errorMessage: any;
 
   constructor(private http: HttpClient, private postService: PostsService) {}
 

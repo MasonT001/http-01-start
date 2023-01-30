@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
 import { map, catchError } from'rxjs/operators'
@@ -21,7 +21,14 @@ constructor(private http: HttpClient) {}
     }
 
     fetchPosts() {
-        return this.http.get<{[key: string]: Post}>('https://ms-http-default-rtdb.firebaseio.com/posts.json', {headers: new HttpHeaders({'custom-header': 'hello'})}).pipe(map(responseData => {
+        let searchParams = new HttpParams()
+        searchParams = searchParams.append('print', 'pretty');
+        searchParams = searchParams.append('custom', 'key');
+
+        return this.http.get<{[key: string]: Post}>('https://ms-http-default-rtdb.firebaseio.com/posts.json', {
+            headers: new HttpHeaders({'custom-header': 'hello'}),
+            params: searchParams
+        }).pipe(map(responseData => {
       const postsArray: Post[] = []
       for (const key in responseData) {
         if (responseData.hasOwnProperty(key)) {
