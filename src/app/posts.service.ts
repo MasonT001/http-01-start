@@ -26,4 +26,8 @@ constructor(private http: HttpClient) {}
       return postsArray
     }));
   }
+
+  onDeletePosts() {
+    return this.http.delete('https://ms-http-default-rtdb.firebaseio.com/posts.json')
+  }
     }
