@@ -15,7 +15,8 @@ constructor(private http: HttpClient) {}
         const postData: Post = {title: title, content: content}
         this.http.post<{name: string}>('https://ms-http-default-rtdb.firebaseio.com/posts.json', postData, 
         {
-            observe: 'body'
+            observe: 'body',
+            responseType: 'json'
         }
         ).subscribe(responseData => {
             console.log(responseData)
